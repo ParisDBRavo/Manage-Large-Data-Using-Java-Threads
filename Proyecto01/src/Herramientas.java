@@ -1,5 +1,8 @@
+package proyecto;
+
 import java.util.Scanner;
 import java.io.*;
+import java.util.List;
 public class Herramientas {
     public static String directorioActual()
     {
@@ -29,22 +32,13 @@ public class Herramientas {
         archivoSalida = archivoSalida + ".csv";
         return archivoSalida;
     }
+    
     public static int contarPalabras(String palabra)
     {
-        int contador;
-        //String palabraSinComa;
-        contador = 0;
-        for(int i = 0; i<palabra.length(); i++)
-        {   
-     //       System.out.println(palabra.charAt(i));
-       
-    if(palabra.charAt(i)==',')
-            {
-                contador = contador+1;
-            }
-        }
-        return contador;
+        String[] s = palabra.split(",");
+        return s.length -1;
     }
+    
     public static int contarEnY(String rutaAbsoluta, String nombreArchivo1)
     {
         int contador =0;
@@ -58,7 +52,7 @@ public class Herramientas {
             }
             archivoOrigen.close();
         }
-        catch(Exception e)
+        catch(IOException e)
         {
             e.getStackTrace(); 
         }
@@ -81,6 +75,48 @@ public class Herramientas {
         int z= (n+1)*i;
         return z;
     }
-
-
+    
+    public static String getValor(){
+        Scanner entrada = new Scanner(System.in);
+        System.out.println("Escribe el valor que debe tener el dato a filtrar: ");
+        String valor = entrada.nextLine();
+        return valor;
+    }
+    
+    public static boolean compararValor(String valor, List<String> renglon, int indice){
+        return renglon.get(indice).equals(valor);
+    }
+    
+//      public static void validarColumna(int columna,int ejex){
+//          
+//      }
+      
+    public static void filtrarPorColumna(String valor,List<List<String>> hilo, int columna){
+        for(List<String> arre: hilo){
+            if(Herramientas.compararValor(valor, arre, columna)){
+                System.out.println(arre);
+            }
+        }
+    }
+    
+    public static int getColumna(int ejex){
+        boolean seguirPreguntando = true;
+        int columna=0;
+          while(seguirPreguntando == true){
+            Scanner entrada = new Scanner(System.in);
+            System.out.println("Selecciona el número de la columna para filtrar los datos:");
+            try{
+                columna = entrada.nextInt();
+                seguirPreguntando = false;
+            }catch(Exception e){
+              System.out.println("ERROR: No has escrito un número entero. Inténtalo de nuevo.");
+              seguirPreguntando = true;
+          }
+            if(columna>ejex){
+                System.out.println("ERROR: No existe la columna que elegiste. Inténtalo de nuevo.");
+                columna = getColumna(ejex);
+            }
+        }
+        return columna;
+    }
 }
