@@ -52,12 +52,8 @@ El número de hilos debe de ser por lo menos 4 veces de los CPUS que detecte la 
 //Veo si el problema vale la pena resolverse de esta manera
             Herramientas.utilidad(numeroProcesadores, ejey);
             division = ejey/(numeroProcesadores*2);
-            //division son las particiones que tendrá el archivo, en mi caso fueron 1
             List<List<String>> listaGrupal = new ArrayList<List<String>>();
             List<List<List<String>>> listaDivision = new ArrayList<List<List<String>>>();
- //La primera lista de listas es para separar por renglon y juntar todos los conjuntos hasta la primera separacion
-  //Las lista de listas de listas es para poner estos conjuntos y es lo que le vamos a mandar a los procesadores
-  //Asi ya tenemos todo por renglon y en conjuntos grandes
 //        System.out.println(ejey);
   //          System.out.println(linea);
   //          System.out.println(ejex);
@@ -83,16 +79,18 @@ El número de hilos debe de ser por lo menos 4 veces de los CPUS que detecte la 
 //------------------------------------------------------------------
               
 
-                for( int i=0; i<=ejex;i++)
+                /* for( int i=0; i<=ejex;i++)
                 {
       //              System.out.println(listaDivision.get(i));
                     archivoDestino.write(campos.get(i)); 
                     archivoDestino.write(",");
                 }
 
-                archivoDestino.newLine(); 
+                archivoDestino.newLine(); */
                 contador =contador+1;
             }
+            listaDivision.add(listaGrupal);    
+            listaGrupal.clear();
             /*for(List<String> l1: listaGrupal)
             {
                  for(String s: l1)
