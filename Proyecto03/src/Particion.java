@@ -15,7 +15,7 @@ public class Particion
     private int archivosTemporales;
     private static int ejey;
     private static final String ruta = Herramientas.directorioActual()+ "/Temporales";
-    private String[] particionesdeNombre;
+    private static String[] particionesdeNombre;
     private static String[] archivosDivididos;
 //aqui invoco los demás metodos para hacer la partición es como mi main
     public static String obtenerRutaTemp()
@@ -147,5 +147,9 @@ public class Particion
     {
         File borrar = new File(ruta);
         borrar.delete();
+    }
+    public static String regresarNombre()
+    {
+        return particionesdeNombre[0];
     }
 }
