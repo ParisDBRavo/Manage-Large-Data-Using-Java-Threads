@@ -50,7 +50,6 @@ public class Particion
             fila = archivoOrigen.readLine();
             columnas = fila.split("" + archivoCSV.getSeparadorCampo() + "");
             archivoOrigen.close();
-            archivoCSV.setCabecera(columnas);
             archivoCSV.setEjex(columnas.length);
             archivoCSV.setEjey(ejex);
             ejey = CalcularDimensiones.calcularY(archivoCSV);

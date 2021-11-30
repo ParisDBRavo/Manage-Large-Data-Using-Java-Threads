@@ -83,14 +83,14 @@ public class Filtrado {
         File datosFiltrados = new File(f.ruta,nombreFiltrado(f.nombre,valor));
         try {
             archivoTemp = new BufferedReader(new FileReader(f.archivo));
-            System.out.println("Lo intenté");
+           
             while((linea = archivoTemp.readLine()) != null){
                BufferedWriter datos = new BufferedWriter(new FileWriter(datosFiltrados,true));
                
                String[] campos = linea.split(",");
-               System.out.println(linea);
+               //System.out.println(linea);
                if(compararValor(valor, campos, columna)){
-                   System.out.println(linea);
+                   //System.out.println(linea);
                    datos.append(linea+"\n");
                } 
                datos.close();
