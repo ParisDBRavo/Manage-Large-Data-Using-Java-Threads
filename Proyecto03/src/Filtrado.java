@@ -1,12 +1,23 @@
+package proyecto;
+
 import java.util.Scanner;
 import java.io.*;
+import java.util.Date;
 
 public class Filtrado extends Thread{
     private ArchivoCSV f;
+    private static String nombreArchivoOriginal;
+    static private Date fecha;
     BufferedWriter datos;
-    public Filtrado(ArchivoCSV f)
+    
+    public void setNombreOriginal(ArchivoCSV archivoOriginal){
+        Filtrado.nombreArchivoOriginal = archivoOriginal.nombre;
+    }
+    
+    public Filtrado(ArchivoCSV f, String nombreArchivoOriginal)
     {
         this.f = f;
+        Filtrado.nombreArchivoOriginal = nombreArchivoOriginal;   
     }
     public static String nombreFiltrado(String nombreArchivoOriginal, String valor)
     {
@@ -66,7 +77,8 @@ public class Filtrado extends Thread{
         pathFinal.mkdir();
         BufferedReader archivoTemp;
         //File datosFiltrados = new File(ruta,nombreFiltrado(f.nombre,valor));
-        File datosFiltrados = new File(ruta,"Resultado.csv");
+        File datosFiltrados = new File(ruta, Filtrado.nombreFiltrado(nombreArchivoOriginal,valor));
+ 
         try {
             archivoTemp = new BufferedReader(new FileReader(f.archivo));
             try{

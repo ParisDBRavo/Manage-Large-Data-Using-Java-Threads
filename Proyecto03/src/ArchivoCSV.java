@@ -1,4 +1,4 @@
-//package proyecto;
+package proyecto;
 
 import java.io.File;
 
@@ -69,10 +69,10 @@ public class ArchivoCSV {
     public void imprimirAtributos() {
         System.out.println("Leyendo archivo...");
         System.out.println("_________________________________________________");
-        System.out.println("\t Nombre del archivo: \t\t " + nombre);
-        System.out.println("\t Separador de campo: \t\t " + separador);        
-        System.out.println("\t Número de renglones: \t\t " + ejey);
-        System.out.println("\t Número de columnas: \t\t " + ejex);
+        System.out.println(" Nombre del archivo: \t\t " + nombre);
+        System.out.println(" Separador de campo: \t\t " + separador);        
+        System.out.println(" Número de renglones: \t\t " + ejey);
+        System.out.println(" Número de columnas: \t\t " + ejex);
         System.out.println("_________________________________________________\n");
         
     }   

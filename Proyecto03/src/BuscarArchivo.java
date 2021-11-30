@@ -1,3 +1,6 @@
+package proyecto;
+
+
 import java.io.File;
 
 public class BuscarArchivo  {

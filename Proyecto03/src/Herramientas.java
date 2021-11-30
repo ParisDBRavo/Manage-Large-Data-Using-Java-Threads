@@ -1,3 +1,6 @@
+package proyecto;
+
+
 import java.util.Scanner;
 public class Herramientas {
     public static String valor;
