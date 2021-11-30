@@ -3,6 +3,7 @@ package proyecto;
 import java.util.Scanner;
 import java.io.*;
 import java.util.Date;
+import java.text.SimpleDateFormat; 
 
 public class Filtrado extends Thread{
     private ArchivoCSV f;
@@ -77,7 +78,7 @@ public class Filtrado extends Thread{
         pathFinal.mkdir();
         BufferedReader archivoTemp;
         //File datosFiltrados = new File(ruta,nombreFiltrado(f.nombre,valor));
-        File datosFiltrados = new File(ruta, Filtrado.nombreFiltrado(nombreArchivoOriginal,valor));
+        File datosFiltrados = new File(ruta, Particion.regresarNombre()+hora()+".csv");
  
         try {
             archivoTemp = new BufferedReader(new FileReader(f.archivo));
@@ -118,5 +119,11 @@ public class Filtrado extends Thread{
         {
 
         }
+    }
+    public static String hora()
+    {
+        SimpleDateFormat formato = new SimpleDateFormat("yyyyMMdd_HHmm");  
+        Date fecha = new Date();  
+        return formato.format(fecha);
     }
 }
