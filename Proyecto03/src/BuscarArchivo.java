@@ -1,11 +1,8 @@
-
+package proyecto;
 
 import java.io.File;
 
 public class BuscarArchivo  {
-    
-//SOFI: Esto es modificado a partir de la clase CSV de Isra
-    
     
     private BuscarArchivo(){   }
    

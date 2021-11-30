@@ -1,3 +1,5 @@
+package proyecto;
+
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -13,7 +15,7 @@ public class Particion
     private String[] particion;
     private static final int division = 500;
     private int archivosTemporales;
-    String ruta = Herramientas.ruta() + "/Temporales";
+    String ruta = Herramientas.directorioActual()+ "/Temporales";
     private String[] particionesdeNombre;
 //aqui invoco los demás metodos para hacer la partición es como mi main
 
@@ -22,7 +24,7 @@ public class Particion
         particionesdeNombre = archivoCSV.getNombre().split("\\.");
         try {
             this.archivoOrigen = new BufferedReader(new FileReader(archivoCSV.getArchivoCSV()));
-
+            
             this.numeroDeParticiones(archivoCSV);
             this.divisionDeArchivos(archivoCSV);
             this.archivoOrigen.close();
@@ -44,14 +46,14 @@ public class Particion
         String fila;
         String columnas[] = {};
         try{
-            int ejex=CalcularDimensiones.CalcularX(archivoCSV);
+            int ejex=CalcularDimensiones.calcularX(archivoCSV);
             fila = archivoOrigen.readLine();
             columnas = fila.split("" + archivoCSV.getSeparadorCampo() + "");
             archivoOrigen.close();
             archivoCSV.setCabecera(columnas);
             archivoCSV.setEjex(columnas.length);
             archivoCSV.setEjey(ejex);
-            ejey = CalcularDimensiones.CalcularY(archivoCSV);
+            ejey = CalcularDimensiones.calcularY(archivoCSV);
             int[] cocienteResiduo = {ejey/division, ejey%division};
             System.out.println(".---------------------------------");
             System.out.println(ejey/division +"    " +ejey%division);
@@ -68,8 +70,6 @@ public class Particion
         }
 
     }
-
-
 
 
     public void divisionDeArchivos(ArchivoCSV archivoCSV)
@@ -94,7 +94,7 @@ public class Particion
             for(int i=0; i<archivosTemporales; i++)
             {
                 //creo el nombre para después crear los archivos
-                archivosDivididos[i]= particionesdeNombre[0] + "_"+ i+1+"_"+particionesdeNombre[1];
+                archivosDivididos[i]= particionesdeNombre[0] + "_"+ i+1+"."+particionesdeNombre[1];
                 archivosParticionados[i]= new BufferedWriter(new FileWriter(new File(ruta, archivosDivididos[i])));
                 System.out.println(archivosParticionados[i]);
             }
@@ -115,7 +115,7 @@ public class Particion
                 archivosParticionados[i].close();
             }
         }
-        catch(Exception e)
+        catch(IOException e)
         {
             System.out.println("division de Archivos");
             System.out.println(e);
