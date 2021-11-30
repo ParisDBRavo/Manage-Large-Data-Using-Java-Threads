@@ -1,6 +1,3 @@
-package proyecto;
-
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -12,13 +9,17 @@ public class Particion
 {
 
     private BufferedReader archivoOrigen;
-    private String[] particion;
-    private static final int division = 500;
+    private static final int division = 1000;
     private int archivosTemporales;
-    String ruta = Herramientas.directorioActual()+ "/Temporales";
+    private static int ejey;
+    private static final String ruta = Herramientas.directorioActual()+ "/Temporales";
     private String[] particionesdeNombre;
+    private static String[] archivosDivididos;
 //aqui invoco los demás metodos para hacer la partición es como mi main
-
+    public static String obtenerRutaTemp()
+    {
+        return ruta;
+    }
     public Particion(ArchivoCSV archivoCSV)
     {
         particionesdeNombre = archivoCSV.getNombre().split("\\.");
@@ -34,6 +35,15 @@ public class Particion
             System.out.println(e);
         }
     }
+    public static int numeroDeDivisiones()
+    {
+        int numero=ejey/division;
+        if(ejey%division != 0)
+        {
+            numero = numero+1;
+        }
+        return numero;
+    }
 
 
 
@@ -41,7 +51,7 @@ public class Particion
     public void numeroDeParticiones(ArchivoCSV archivoCSV)
     {
         //aqui calculo el numero de particiones a realizar
-        int ejey = 0;
+        
        // int[] cocienteResiduo;
         String fila;
         String columnas[] = {};
@@ -50,12 +60,11 @@ public class Particion
             fila = archivoOrigen.readLine();
             columnas = fila.split("" + archivoCSV.getSeparadorCampo() + "");
             archivoOrigen.close();
-            archivoCSV.setEjex(columnas.length);
-            archivoCSV.setEjey(ejex);
+
             ejey = CalcularDimensiones.calcularY(archivoCSV);
             int[] cocienteResiduo = {ejey/division, ejey%division};
-            System.out.println(".---------------------------------");
-            System.out.println(ejey/division +"    " +ejey%division);
+         //   System.out.println(".---------------------------------");
+         //   System.out.println(ejey/division +"    " +ejey%division);
             if (cocienteResiduo[1] > 0) {           
                 setArchivosTemporales(cocienteResiduo[0] + 1);
             } else {            
@@ -77,14 +86,14 @@ public class Particion
         int indiceArchivo=0;
         int numFila = 1;
         String fila;
-        String[] archivosDivididos;
+        
         File pathProvisorio; 
 
         BufferedWriter[] archivosParticionados;
 
         archivosDivididos = new String[archivosTemporales];
         archivosParticionados = new BufferedWriter[archivosTemporales];
-        System.out.println(archivosTemporales);
+       // System.out.println(archivosTemporales);
         pathProvisorio = new File(ruta);
         try
         {
@@ -95,7 +104,7 @@ public class Particion
                 //creo el nombre para después crear los archivos
                 archivosDivididos[i]= particionesdeNombre[0] + "_"+ i+1+"."+particionesdeNombre[1];
                 archivosParticionados[i]= new BufferedWriter(new FileWriter(new File(ruta, archivosDivididos[i])));
-                System.out.println(archivosParticionados[i]);
+                //System.out.println(archivosParticionados[i]);
             }
             while ((fila = archivoOrigen.readLine()) != null) 
             {
@@ -127,5 +136,14 @@ public class Particion
     public void setArchivosTemporales(int archivosTemporales) 
     {
         this.archivosTemporales = archivosTemporales;
+    }
+    public static String nombresTemporales(int i)
+    {
+        return archivosDivididos[i];
+    }
+    public static void eliminarDirectorio()
+    {
+        File borrar = new File(ruta);
+        borrar.delete();
     }
 }

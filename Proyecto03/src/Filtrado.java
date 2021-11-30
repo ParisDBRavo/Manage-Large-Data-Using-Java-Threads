@@ -1,11 +1,15 @@
-package proyecto;
-
 import java.util.Scanner;
 import java.io.*;
 
-public class Filtrado {
-
-    public static String nombreFiltrado(String nombreArchivoOriginal, String valor){
+public class Filtrado extends Thread{
+    private ArchivoCSV f;
+    BufferedWriter datos;
+    public Filtrado(ArchivoCSV f)
+    {
+        this.f = f;
+    }
+    public static String nombreFiltrado(String nombreArchivoOriginal, String valor)
+    {
         return nombreArchivoOriginal +"_"+valor+".csv";
     }
     
@@ -41,63 +45,66 @@ public class Filtrado {
         return columna;
     }
     
-    public static void filtrarArchivoTemporal(String nombre, String ruta) throws IOException{
-        if(BuscarArchivo.Buscar(ruta, nombre)){
-        ArchivoCSV f = new ArchivoCSV(nombre, ruta);
-        f.setEjex(CalcularDimensiones.calcularX(f));
-        
-        int columna = pedirColumna(f.ejex);
-        String valor = pedirValor();
-        String linea;
-
-        BufferedReader archivoTemp;
-        try {
-            archivoTemp = new BufferedReader(new FileReader(f.archivo));
-            while((linea = archivoTemp.readLine()) != null){
-               BufferedWriter datosFiltrados = new BufferedWriter(new FileWriter(nombreFiltrado(nombre, ruta),true));
-               
-               String[] campos = linea.split(",");
-               
-               if(compararValor(valor, campos, columna)){
-                   datosFiltrados.append(linea);
-               } 
-               datosFiltrados.close();
-            }
-        } catch (FileNotFoundException ex) {
-            System.out.println("Archivo para escribir no encontrado.");
-        }  
-    }
-    }   
+   
     
-      public static void filtrarArchivoTemporal(ArchivoCSV f) throws IOException{
+      public void run() 
+      {
         if(BuscarArchivo.Buscar(f.ruta, f.nombre)){
-        
-        f.setEjex(CalcularDimensiones.calcularX(f));
-        f.setEjey(CalcularDimensiones.calcularY(f));
-        
-        int columna = pedirColumna(f.ejex);
-        String valor = pedirValor();
-        String linea;
+        try{f.setEjex(CalcularDimensiones.calcularX(f));
+            f.setEjey(CalcularDimensiones.calcularY(f));}
+        catch(IOException e){
 
+        }
+        File pathFinal;
+        int columna = Herramientas.columna;
+        String valor = Herramientas.valor;
+        //System.out.println(Herramientas.columna);
+        String linea;
+        String ruta = f.ruta.replaceAll("Temporales", "") + "/Resultado";
+        //System.out.println(ruta);
+        pathFinal = new File(ruta);
+        pathFinal.mkdir();
         BufferedReader archivoTemp;
-        File datosFiltrados = new File(f.ruta,nombreFiltrado(f.nombre,valor));
+        //File datosFiltrados = new File(ruta,nombreFiltrado(f.nombre,valor));
+        File datosFiltrados = new File(ruta,"Resultado.csv");
         try {
             archivoTemp = new BufferedReader(new FileReader(f.archivo));
-           
+            try{
             while((linea = archivoTemp.readLine()) != null){
-               BufferedWriter datos = new BufferedWriter(new FileWriter(datosFiltrados,true));
+
+               datos = new BufferedWriter(new FileWriter(datosFiltrados,true));
                
                String[] campos = linea.split(",");
                //System.out.println(linea);
                if(compararValor(valor, campos, columna)){
                    //System.out.println(linea);
-                   datos.append(linea+"\n");
+                   agregar(linea);
                } 
-               datos.close();
+              datos.close();
             }
-        } catch (FileNotFoundException ex) {
+            archivoTemp.close();
+            }
+            catch (IOException ex) 
+            {
+                System.out.println("Archivo para escribir no encontrado.");
+            } 
+        }
+        catch (FileNotFoundException ex) {
             System.out.println("Archivo para escribir no encontrado.");
         }  
+        finally{
+
+        }}
     }
-    }  
+    public synchronized void agregar(String linea)
+    {
+        try
+        {
+            datos.append(linea+"\n");
+        }
+        catch(Exception E)
+        {
+
+        }
+    }
 }

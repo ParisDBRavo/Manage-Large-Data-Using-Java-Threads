@@ -1,12 +1,12 @@
-package proyecto;
+import java.io.File;
 import java.io.IOException;
-
+import java.util.concurrent.*;
 public class Main {
 
     public static void main(String[] args) throws IOException {
         String nombreArchivo;//S
         String ruta;//S
-        
+        ArchivoCSV [] archivos;
         /* ---------Directorio y nombre fijos (mientras trabajamos)--------*/
          //----------------------------------------------------------------
         ruta = System.getProperty("user.dir");//S
@@ -29,6 +29,8 @@ public class Main {
         //S: Para crear el objeto archivo:
         
         LeeryCrear.leer(nombreArchivo, ruta);
+        ExecutorService hilos =Executors.newFixedThreadPool(Particion.numeroDeDivisiones());
+      // System.out.println("Numero de archivos: " + Particion.numeroDeDivisiones());
 //        ArchivoCSV f = new ArchivoCSV(nombreArchivo, ruta);//crea un objeto tipo ArchivoCSV
 //        
 //        f.setEjex(CalcularDimensiones.calcularX(f));
@@ -38,12 +40,39 @@ public class Main {
 //        
 //        Particion particion = new Particion(f);
         
-        String nombreTemporal = "Cryptocurrencies_to_USD_default_day_2021-01-09_11.csv";
-        String rutaTemporal = "D:\\Documents\\POSGRADO\\Master\\Prog Av\\PROYECTO\\Proyecto\\Temporales";
-        
-        ArchivoCSV archivoTemporal = new ArchivoCSV(nombreTemporal, rutaTemporal);
-        Filtrado.filtrarArchivoTemporal(archivoTemporal);
+        Herramientas.pedirColumna(LeeryCrear.ejexSinArchivo());
+        Herramientas.pedirValor();
+     //   System.out.println("-------------------");
+     //   System.out.println(LeeryCrear.ejexSinArchivo());
+     //   System.out.println("-------------------");
+      //  String nombreTemporal = "Cryptocurrencies_to_USD_default_day_2021-01-09.csv";
+     //   String rutaTemporal = Herramientas.directorioActual();
+        //System.out.println(Herramientas.directorioActual());
+        //ArchivoCSV archivoTemporal = new ArchivoCSV(nombreTemporal, rutaTemporal);
+        long tiempoInicial = System.currentTimeMillis();
+
+        for(int i= 0; i<Particion.numeroDeDivisiones(); i++)
+        {
+            hilos.execute( new Filtrado(new ArchivoCSV(Particion.nombresTemporales(i), Particion.obtenerRutaTemp())));
+            
+        }
+        hilos.shutdown();
+        while(!hilos.isTerminated())
+        {
+
+        }
+        long tiempoFinal = System.currentTimeMillis();
+        long tiempoTotal = tiempoFinal - tiempoInicial;
+        System.out.println((double)tiempoTotal/1000 +" segundos.");
+        for(int i= 0; i<Particion.numeroDeDivisiones(); i++)
+        {
+            File archivo = new File(Particion.obtenerRutaTemp(),Particion.nombresTemporales(i));
+            archivo.delete();
+        }
+        Particion.eliminarDirectorio();
+        //Filtrado.filtrarArchivoTemporal(archivoTemporal);
        
     }
+
 
 }

@@ -1,13 +1,10 @@
-
-package proyecto;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
 
 public class LeeryCrear {
-   
+   private static String campos[]; 
     static void leer(String nombreArchivo, String ruta) throws IOException{
        ArchivoCSV f = new ArchivoCSV(nombreArchivo, ruta);//crea un objeto tipo ArchivoCSV
         
@@ -15,7 +12,7 @@ public class LeeryCrear {
         f.setEjey(CalcularDimensiones.calcularY(f));
         BufferedReader archivoOrigen = new BufferedReader(new FileReader(f.getArchivoCSV()));
         String fila = archivoOrigen.readLine();
-        String campos[] = fila.split(""+f.getSeparadorCampo());
+        campos = fila.split(""+f.getSeparadorCampo());
         f.imprimirAtributos();
         imprimirCampos(campos);
         Particion particion = new Particion(f);
@@ -31,6 +28,9 @@ public class LeeryCrear {
         System.out.println("|");
         System.out.println("-->");
     }
-    
+    public static int ejexSinArchivo()
+    {
+        return campos.length;
+    }
         
 }

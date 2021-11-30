@@ -1,11 +1,11 @@
-package proyecto;
+//package proyecto;
 
 import java.io.File;
 
 public class ArchivoCSV {
     private static char SEPARADOR_DEFAULT = ',';
     
-    protected File archivo;
+    public File archivo;
 
     protected String nombre;
     protected String ruta;
@@ -25,6 +25,7 @@ public class ArchivoCSV {
         this.ruta = ruta;
         this.setAtributos();
     }
+    
 
     public File getArchivoCSV() {
         return archivo;

@@ -1,11 +1,11 @@
-package proyecto;
-
-
+import java.util.Scanner;
 public class Herramientas {
+    public static String valor;
+    public static int columna;
     public static String directorioActual()
     {
         String currentDir = System.getProperty("user.dir");
-        System.out.println("Current dir:" + currentDir);
+        //System.out.println("Current dir:" + currentDir);
         return currentDir;
     }
     
@@ -31,5 +31,32 @@ public class Herramientas {
     {
         int z= (n+1)*i;
         return z;
+    }
+    public static String pedirValor(){
+        Scanner entrada = new Scanner(System.in);
+        System.out.println("Escribe el valor que debe tener el dato a filtrar: ");
+        valor = entrada.nextLine();
+        return valor;
+    }
+    public static int pedirColumna(int ejex){
+        boolean seguirPreguntando = true;
+        columna=0;
+          while(seguirPreguntando == true)
+          {
+            Scanner entrada = new Scanner(System.in);
+            System.out.println("Selecciona el número de la columna para filtrar los datos:");
+            try{
+                columna = entrada.nextInt();
+                seguirPreguntando = false;
+            }catch(Exception e){
+              System.out.println("ERROR: No has escrito un número entero. Inténtalo de nuevo.");
+              seguirPreguntando = true;
+          }
+            if(columna>ejex){
+                System.out.println("ERROR: No existe la columna que elegiste. Inténtalo de nuevo.");
+                columna = pedirColumna(ejex);
+            }
+        }
+        return columna;
     }
 }
